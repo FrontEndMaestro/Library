@@ -3,6 +3,22 @@ const addButton = document.querySelector(".add");
 const dialog = document.querySelector("dialog");
 const dialogClose = document.querySelector("dialog button");
 const myLibrary = [];
+
+class Book {
+  constructor(title, author, pages, read, index) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.index = index;
+  }
+
+  toggleRead() {
+    this.read = this.read == 1 ? 0 : 1;
+    alert(this.read);
+  }
+}
+
 addBookToLibrary("Harry Potter", "JK", "211", 1);
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", "310", 0);
 addBookToLibrary("1984", "George Orwell", "328", 1);
@@ -16,16 +32,8 @@ addBookToLibrary("Brave New World", "Aldous Huxley", "311", 0);
 addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", "1178", 1);
 addBookToLibrary("The Odyssey", "Homer", "351", 0);
 addBookToLibrary("The Chronicles of Narnia", "C.S. Lewis", "767", 1);
-function Book(title, author, pages, read, index) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.index = index;
-}
 
 function addBookToLibrary(title, author, pages, read, index) {
-  // do stuff here
   if(!myLibrary.some(element=>element.title==title)){
   index = myLibrary.length;
   console.log(index);
