@@ -15,7 +15,6 @@ class Book {
 
   toggleRead() {
     this.read = this.read == 1 ? 0 : 1;
-    alert(this.read);
   }
 }
 
@@ -34,35 +33,24 @@ addBookToLibrary("The Odyssey", "Homer", "351", 0);
 addBookToLibrary("The Chronicles of Narnia", "C.S. Lewis", "767", 1);
 
 function addBookToLibrary(title, author, pages, read, index) {
-  if(!myLibrary.some(element=>element.title==title)){
-  index = myLibrary.length;
-  console.log(index);
-  const book = new Book(title, author, pages, read, index);
+  if (!myLibrary.some((element) => element.title == title)) {
+    index = myLibrary.length;
+    const book = new Book(title, author, pages, read, index);
 
-  myLibrary.push(book);
-  console.log("added");
-  displayLibrary();}
-  else{
-    console.log("Already exists");
+    myLibrary.push(book);
+    displayLibrary();
+  } else {
+    alert("Already exists");
   }
 }
 
-Book.prototype.toggleRead=function(){
-  this.read=this.read==1 ? 0:1;
-  alert(this.read);
-}
-
-
-
 function displayLibrary() {
-
   container.innerHTML = "";
   let read;
   myLibrary.forEach((element) => {
     if (element.read == 1) {
       read = "true";
-    }
-    else {
+    } else {
       read = "false";
     }
     let card = document.createElement("div");
@@ -72,57 +60,62 @@ function displayLibrary() {
             <ul>
             <li>Author: ${element.author}</li>
             <li>Pages: ${element.pages}</li>
-            <li><input type="checkbox" id="read" data-index=${element.index} ${element.read==1 ? "checked" : ""}>
+            <li><input type="checkbox" id= read-${element.index} data-index=${
+      element.index
+    } ${element.read == 1 ? "checked" : ""}>
             <label for="read">Read</label>
             </li>
             </ul>
             <button class="remove" data-index=${element.index}>Remove</button>`;
-    console.log(element)
+    console.log(element);
     container.appendChild(card);
-
   });
 }
 
 addButton.addEventListener("click", () => {
   dialog.showModal();
-})
+});
 
 dialogClose.addEventListener("click", () => {
   dialog.close();
-})
+});
 
 const submit = document.querySelector(".submit");
 const title = document.getElementById("title");
 const author = document.getElementById("author");
 const pages = document.getElementById("pages");
 const read = document.getElementById("read");
+const form = document.querySelector("form");
+console.log(form);
 
-submit.addEventListener("click", (event) => {
-  addBookToLibrary(title.value, author.value, pages.value, read.value);
+form.addEventListener("submit", (event) => {
   event.preventDefault();
-  dialog.close();
-})
+  if (!form.reportValidity()) {
+  } else {
+    addBookToLibrary(title.value, author.value, pages.value, read.value);
+    title.value = "";
+    author.value = "";
+    pages.value = "";
+    dialog.close();
+  }
+});
 
 container.addEventListener("click", (event) => {
   if (event.target.classList.contains("remove")) {
-    const bookindex=event.target.dataset.index;
-    console.log(bookindex);
-    myLibrary.splice(bookindex,1);
+    const bookindex = event.target.dataset.index;
+    myLibrary.splice(bookindex, 1);
     updateindex();
     displayLibrary();
-  }
-  else if(event.target.id=="read"){
-    const index=event.target.dataset.index;
+  } else if (event.target.id.includes("read-")) {
+    const index = event.target.dataset.index;
     myLibrary[index].toggleRead();
-    
-   }
+  }
 });
 
-
-function updateindex(){
-  var index=0;
-  myLibrary.forEach(element=>{
-    element.index=index;
+function updateindex() {
+  var index = 0;
+  myLibrary.forEach((element) => {
+    element.index = index;
     index++;
-  })
+  });
 }
